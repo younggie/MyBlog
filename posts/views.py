@@ -1,7 +1,7 @@
 from posts.models import Post
 from users.models import User
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -20,3 +20,11 @@ def write(request):
         return HttpResponseRedirect("/posts")
     else:
         return render(request, "write.html")
+
+
+def read(request, id):
+    try:
+        post = Post.objects.get(pk=id)
+    except Post.DoesNotExist:
+        raise Http404("Does not exist!")
+    return render(request, "read.html", {"post": post})
