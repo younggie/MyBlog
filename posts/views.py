@@ -1,13 +1,17 @@
-from posts.models import Post
-from users.models import User
+from django.db import models
 
+from django.views.generic import View, DetailView
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
+from comments import forms as comment_forms
+from comments.models import Comment
+
+from . import models
 
 
 def index(request):
-    posts = {"posts": Post.objects.all()}
+    posts = {"posts": models.Post.objects.all()}
     return render(request, "list.html", posts)
 
 
@@ -15,7 +19,7 @@ def write(request):
     if request.method == "POST":
         title = request.POST["title"]
         content = request.POST["content"]
-        post = Post(user_id=request.user.id, title=title, content=content)
+        post = models.Post(user_id=request.user.id, title=title, content=content)
         post.save()
         return HttpResponseRedirect("/posts")
     else:
@@ -24,7 +28,21 @@ def write(request):
 
 def read(request, id):
     try:
-        post = Post.objects.get(pk=id)
-    except Post.DoesNotExist:
+        post = models.Post.objects.get(pk=id)
+    except models.Post.DoesNotExist:
         raise Http404("Does not exist!")
     return render(request, "read.html", {"post": post})
+
+
+class PostReadView(View):
+    def get(self, *args, **kwargs):
+        pk = kwargs.get("pk")
+        post = models.Post.objects.get(pk=pk)
+        form = comment_forms.CreateCommentForm()
+        comments = Comment.objects.filter(post_id=pk)
+
+        return render(
+            self.request,
+            "posts/read.html",
+            {"post": post, "form": form, "comments": comments},
+        )

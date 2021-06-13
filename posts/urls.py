@@ -6,5 +6,5 @@ app_name = "posts"
 urlpatterns = [
     path("", views.index),
     path("write", views.write),
-    path("<int:id>", views.read, name="read"),
+    path("<int:pk>", views.PostReadView.as_view(), name="read"),
 ]

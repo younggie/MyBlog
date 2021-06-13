@@ -1,12 +1,13 @@
 from django.db import models
 
 
-class Post(models.Model):
+class Comment(models.Model):
     user = models.ForeignKey(
-        "users.User", related_name="posts", on_delete=models.CASCADE
+        "users.User", related_name="comments", on_delete=models.CASCADE
     )
-    title = models.CharField(max_length=100, null=False)
+    post = models.ForeignKey(
+        "posts.Post", related_name="comments", on_delete=models.CASCADE
+    )
     content = models.TextField(null=False)
-    fileUrl = models.CharField(max_length=500, default="")
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)

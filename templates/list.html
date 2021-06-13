@@ -1,21 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>게시판 - 목록</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-</head>
-<body>
-<header>
-    <div class="navbar navbar-dark bg-dark shadow-sm mb-3">
-        <div class="container d-flex justify-content-between">
-            <a href="/" class="navbar-brand d-flex align-items-center">
-                <strong>My Blog</strong>
-            </a>
-        </div>
-    </div>
-</header>
+{% extends "base.html" %}
+{% block content %}
+
 <div class="container">
     <table class="table">
         <thead class="thead-light">
@@ -54,6 +39,4 @@
         </div>
     </div>
 </div>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-</body>
-</html>
+{% endblock content %}

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "pages",
     "posts",
+    "comments",
     "django.contrib.sites",
     "allauth",  # new
     "allauth.account",  # new
