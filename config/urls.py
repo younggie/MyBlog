@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from comments import views
+from comments import views as comment_views
+from posts import views as post_views
 
 urlpatterns = [
+    # path("", post_views.index, name="posts"),
+    path("", post_views.HomeView.as_view(), name="posts"),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path("", include("pages.urls")),
+    # path("", include("pages.urls")),
     path("posts/", include("posts.urls", namespace="posts")),
-    path("comment/create/<int:post>", views.create_comment, name="create"),
+    path("comment/create/<int:post>", comment_views.create_comment, name="create"),
 ]

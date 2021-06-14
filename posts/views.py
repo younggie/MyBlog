@@ -8,11 +8,21 @@ from comments import forms as comment_forms
 from comments.models import Comment
 
 from . import models
+from django.views.generic import ListView
 
 
 def index(request):
     posts = {"posts": models.Post.objects.all()}
-    return render(request, "list.html", posts)
+    return render(request, "posts/card_list.html", posts)
+
+
+class HomeView(ListView):
+    model = models.Post
+    paginate_by = 3
+    paginate_orphans = 1
+    ordering = "created_date"
+    context_object_name = "posts"
+    template_name = "posts/card_list.html"
 
 
 def write(request):
