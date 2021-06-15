@@ -1,13 +1,13 @@
 from django.db import models
 
-from django.views.generic import View, DetailView
+from django.views.generic import View, FormView
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from comments import forms as comment_forms
 from comments.models import Comment
 
-from . import models
+from . import models, forms
 from django.views.generic import ListView
 
 
@@ -18,9 +18,9 @@ def index(request):
 
 class HomeView(ListView):
     model = models.Post
-    paginate_by = 3
-    paginate_orphans = 1
-    ordering = "created_date"
+    paginate_by = 6
+    # paginate_orphans = 1
+    ordering = "-created_date"
     context_object_name = "posts"
     template_name = "posts/card_list.html"
 
@@ -34,6 +34,29 @@ def write(request):
         return HttpResponseRedirect("/posts")
     else:
         return render(request, "write.html")
+
+
+class PostWriteView(FormView):
+    form_class = forms.WritePostForm
+    template_name = "posts/write.html"
+    fields = (
+        "title",
+        "content",
+        "attach",
+    )
+
+    def form_valid(self, form):
+        post = form.save()
+        post.user = self.request.user
+        post.save()
+        return HttpResponseRedirect("/posts")
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["title"].label = "제목"
+        form.fields["content"].label = "내용"
+        form.fields["attach"].label = "첨부파일"
+        return form
 
 
 def read(request, id):

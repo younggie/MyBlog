@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from comments import views as comment_views
 from posts import views as post_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # path("", post_views.index, name="posts"),
@@ -26,4 +28,12 @@ urlpatterns = [
     # path("", include("pages.urls")),
     path("posts/", include("posts.urls", namespace="posts")),
     path("comment/create/<int:post>", comment_views.create_comment, name="create"),
+    # path(
+    #     "comment/create/<int:post>",
+    #     comment_views.CommentWriteView.as_view(),
+    #     name="create",
+    # ),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

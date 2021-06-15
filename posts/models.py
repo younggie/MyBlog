@@ -7,7 +7,7 @@ class Post(models.Model):
     )
     title = models.CharField(max_length=100, null=False)
     content = models.TextField(null=False)
-    fileUrl = models.CharField(max_length=500, default="")
+    attach = models.ImageField(upload_to="photos", null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 

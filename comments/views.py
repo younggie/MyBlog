@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from posts.models import Post
 from users.models import User
+from django.views.generic import FormView
 from comments.models import Comment
 from posts import models as post_models
 from django.shortcuts import render, redirect, reverse
@@ -21,3 +22,21 @@ def create_comment(request, post):
         comment.save()
 
         return redirect(reverse("posts:read", kwargs={"pk": post.pk}))
+
+
+class CommentWriteView(FormView):
+    form_class = forms.CreateCommentForm
+    fields = ("content",)
+
+    def form_valid(self, form):
+        comment = form.save()
+        comment.user = self.request.user
+        
+        # comment.post =
+        comment.save()
+        return redirect(reverse("posts:read", kwargs={"pk": post.pk}))
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["content"].label = "댓글"
+        return form
