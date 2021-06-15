@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 django = "==2.2.5"
-mysqlclient = "*"
 django-allauth = "~=0.42.0"
 django-dotenv = "*"
 pillow = "*"
