@@ -28,11 +28,7 @@ urlpatterns = [
     # path("", include("pages.urls")),
     path("posts/", include("posts.urls", namespace="posts")),
     path("comment/create/<int:post>", comment_views.create_comment, name="create"),
-    # path(
-    #     "comment/create/<int:post>",
-    #     comment_views.CommentWriteView.as_view(),
-    #     name="create",
-    # ),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
