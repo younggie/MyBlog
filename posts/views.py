@@ -1,6 +1,6 @@
 from django.db import models
 
-from django.views.generic import View, FormView
+from django.views.generic import View, FormView,UpdateView
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
@@ -58,6 +58,26 @@ class PostWriteView(FormView):
         form.fields["attach"].label = "첨부파일"
         return form
 
+class PostEditView(UpdateView):
+    model = models.Post
+    template_name = "posts/edit.html"
+    fields = {
+        "title",
+        "content",
+        "attach",       
+    }
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["title"].label = "제목"
+        form.fields["content"].label = "내용"
+        form.fields["attach"].label = "첨부파일"
+        return form    
+
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset=queryset)
+        if post.user.pk != self.request.user.pk:
+            raise Http404()
+        return post
 
 def read(request, id):
     try:

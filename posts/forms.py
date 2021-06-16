@@ -14,3 +14,5 @@ class WritePostForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         post = super().save(commit=False)
         return post
+
+

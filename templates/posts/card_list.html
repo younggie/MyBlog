@@ -15,7 +15,7 @@
                
                 <div class="card-body">
                 <h5 class="card-title">{{ post.title }}</h5>
-                <p class="card-text">{{ post.content }}</p>
+                <p class="card-text">{{ post.content  | safe}}</p>
                 <a href="/posts/{{ post.id }}" class="btn btn-primary">내용보기</a>
                 </div>
             </div>

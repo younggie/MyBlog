@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "allauth",  # new
     "allauth.account",  # new
     "allauth.socialaccount",  # new
+    "ckeditor",
+
 ]
 
 MIDDLEWARE = [
@@ -131,6 +133,8 @@ MEDIA_URL = "/media/"
 
 AUTH_USER_MODEL = "users.User"
 
+
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 AUTHENTICATION_BACKENDS = (
@@ -150,3 +154,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_UNIQUE_EMAIL = True
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"

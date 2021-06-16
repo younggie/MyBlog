@@ -4,8 +4,9 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{ post.title }} - {{ post.author }}</h5>
+            <h6 class="card-title">작성자: {{ post.user.username }}</h6>
             <p class="card-text"><small class="text-muted">{{ post.created_date | date:"Y-m-d h:i" }}</small></p>
-            <p class="card-text">{{ post.content }}</p>
+            <p class="card-text">{{ post.content | safe}}</p>
         </div>
     </div>
     <div> 
@@ -25,17 +26,19 @@
     </div>
 
     <div class="row mt-3">
+        {% if post.user.pk == user.pk %}
         <div class="col-auto mr-auto"></div>
         <div class="col-auto">
-            <a class="btn btn-info" href="/post/edit/{{ post.id }}" role="button">수정</a>
+            <a class="btn btn-info" href="/posts/{{ post.id }}/edit" role="button">수정</a>
         </div>
         <div class="col-auto">
-            <form id="delete-form" action="/post/delete/{{ post.id }}" method="post">
+            <form id="delete-form" action="/posts/delete/{{ post.id }}" method="post">
                 <input type="hidden" name="_method" value="delete"/>
                 <button id="delete-btn" type="submit" class="btn btn-danger">삭제</button>
                 
             </form>
         </div>
+        {% endif %}
         <div class="col-auto"><button id="list-btn" type="button" class="btn btn-primary" onclick="history.back();">목록</button></div>
     </div>
 </div>
