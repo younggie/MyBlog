@@ -9,22 +9,6 @@
             <p class="card-text">{{ post.content | safe}}</p>
         </div>
     </div>
-    <div> 
-        댓글: {{ comments.count}}개
-        {% for comment in comments %}
-        <div>{{ comment.content }}  {{ comment.user.username }}</div>
-        {% endfor %}
-    </div>
-    <div>
-        <form action="/comment/create/{{ post.id }}" method="POST" >
-            {% csrf_token %}
-            {{form}}
-            <input class="btn btn-secondary" type="submit" value="확인" />
-           
-    
-        </form>      
-    </div>
-
     <div class="row mt-3">
         {% if post.user.pk == user.pk %}
         <div class="col-auto mr-auto"></div>
@@ -32,14 +16,33 @@
             <a class="btn btn-info" href="/posts/{{ post.id }}/edit" role="button">수정</a>
         </div>
         <div class="col-auto">
-            <form id="delete-form" action="/posts/delete/{{ post.id }}" method="post">
-                <input type="hidden" name="_method" value="delete"/>
-                <button id="delete-btn" type="submit" class="btn btn-danger">삭제</button>
-                
-            </form>
+          
+            <a class="btn btn-danger" href="/posts/{{ post.id }}/delete" role="button">삭제</a>
         </div>
         {% endif %}
         <div class="col-auto"><button id="list-btn" type="button" class="btn btn-primary" onclick="history.back();">목록</button></div>
+    </div>   
+    <div> 
+        댓글: {{ comments.count}}개
+        {% for comment in comments %}
+        <div>{{ comment.content }} / {{ comment.user.username }}  
+            {% if comment.user.pk == user.pk %}
+            
+            / <a href="/comment/{{ comment.pk }}/delete/">삭제</a>
+            {% endif %}
+        </div>
+        {% endfor %}
     </div>
+    <div>
+        <form action="/comment/create/{{ post.id }}" method="POST" >
+            {% csrf_token %}
+            {{form}}   
+            <input class="btn btn-secondary" type="submit" value="확인" />
+           
+    
+        </form>      
+    </div>
+
+
 </div>
 {% endblock content %}

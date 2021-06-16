@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
+from comments import models
 from posts.models import Post
 from users.models import User
 from django.views.generic import FormView
@@ -22,6 +23,18 @@ def create_comment(request, post):
         comment.save()
 
         return redirect(reverse("posts:read", kwargs={"pk": post.pk}))
+
+
+def delete_comment(request, comment_pk):
+    user = request.user
+    comment = models.Comment.objects.get(pk=comment_pk)
+    post_pk = comment.post.id
+    if user.pk == comment.user.pk:
+        models.Comment.objects.filter(pk =comment_pk).delete()
+    return redirect(reverse("posts:read", kwargs={"pk": post_pk}))
+    
+
+
 
 
 class CommentWriteView(FormView):

@@ -3,7 +3,7 @@ from django.db import models
 from django.views.generic import View, FormView,UpdateView
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
-from django.urls import reverse
+from django.shortcuts import render, redirect, reverse
 from comments import forms as comment_forms
 from comments.models import Comment
 
@@ -23,17 +23,6 @@ class HomeView(ListView):
     ordering = "-created_date"
     context_object_name = "posts"
     template_name = "posts/card_list.html"
-
-
-def write(request):
-    if request.method == "POST":
-        title = request.POST["title"]
-        content = request.POST["content"]
-        post = models.Post(user_id=request.user.id, title=title, content=content)
-        post.save()
-        return HttpResponseRedirect("/posts")
-    else:
-        return render(request, "write.html")
 
 
 class PostWriteView(FormView):
@@ -99,3 +88,12 @@ class PostReadView(View):
             "posts/read.html",
             {"post": post, "form": form, "comments": comments},
         )
+
+
+def delete_post(request, pk):
+    user = request.user
+    post = models.Post.objects.get(pk=pk)
+    
+    if user.pk == post.user.pk:
+        models.Post.objects.filter(pk =pk).delete()
+    return redirect("/")
