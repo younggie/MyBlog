@@ -16,3 +16,6 @@ class WritePostForm(forms.ModelForm):
         return post
 
 
+class SearchForm(forms.Form):
+    search_text = forms.CharField()
+    

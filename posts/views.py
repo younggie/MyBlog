@@ -6,6 +6,8 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, reverse
 from comments import forms as comment_forms
 from comments.models import Comment
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 from . import models, forms
 from django.views.generic import ListView
@@ -97,3 +99,31 @@ def delete_post(request, pk):
     if user.pk == post.user.pk:
         models.Post.objects.filter(pk =pk).delete()
     return redirect("/")
+
+
+class SearchView(View):
+
+    def get(self, request):
+        form = forms.SearchForm(request.GET)
+        if form.is_valid():
+            search_text = form.cleaned_data.get("search_text")
+            print(search_text)
+            post_list = models.Post.objects.filter(Q(title__contains=search_text) | Q(content__contains=search_text))
+
+            paginator = Paginator(post_list, 10, orphans=5)
+
+            page = request.GET.get("page", 1)
+
+            posts = paginator.get_page(page)
+
+
+
+   
+           
+
+            #qs = models.Post.objects.get(title__contains=search_text)
+
+            return render(
+                    request, "posts/card_list.html", {"form": form, "posts": posts}
+            )
+
