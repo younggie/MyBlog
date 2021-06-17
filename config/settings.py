@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "pages",
     "posts",
     "comments",
+    "likes",
     "django.contrib.sites",
     "allauth",  # new
     "allauth.account",  # new

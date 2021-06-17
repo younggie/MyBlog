@@ -30,6 +30,7 @@ urlpatterns = [
     path("comment/create/<int:post>", comment_views.create_comment, name="create"),
     path("comment/<int:comment_pk>/delete/", comment_views.delete_comment, name="delete-comment"),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path("likes/", include("likes.urls", namespace="likes")),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

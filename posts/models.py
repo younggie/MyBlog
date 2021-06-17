@@ -14,6 +14,8 @@ class Post(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     content = RichTextField(blank=True,null=True)
     
+    def __str__(self):
+        return self.title
 
     class Meta:
         ordering = ("-created_date",)
